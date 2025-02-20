@@ -1,9 +1,9 @@
-@login
-Feature: Home Page Verification
+
+Feature: Verify if admin is sucssessfuly login to  LMS portal.
 
   Scenario: 
-    Given Verify admin is able to land on home page
-    When Admin gives the correct LMS portal URL
-    Then Admin should land on the home page
+    Given Admin is in LoginPage
+    When Admin enters valid user and password with select role as Admin.
+    Then Admin should be landing to home page
 
     

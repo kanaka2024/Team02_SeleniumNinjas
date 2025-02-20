@@ -9,6 +9,7 @@ import pageObjects.LoginPage;
 
 import utils.Constants;
 import utils.ExcelReader;
+import utils.helperMethod;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,26 +17,23 @@ import io.cucumber.java.en.When;
 public class LoginPageSteps {
 	
 	private LoginPage loginpg = new LoginPage(DriverFactory.getDriver());
-	private ExcelReader excelRead = new ExcelReader();
-
+	private helperMethod helper = new helperMethod(DriverFactory.getDriver());
 	
-	@Given("Verify admin is able to land on home page")
-	public void verify_admin_is_able_to_land_on_home_page() {
-		
-			System.out.println("The user ois on Login page");
+	@Given("Admin is in LoginPage")
+	public void admin_is_in_login_page() {
+	   
 	}
 
-	@When("Admin gives the correct LMS portal URL")
-	public void admin_gives_the_correct_lms_portal_url() {
-	
-		loginpg.getloginUrl();
+	@When("Admin enters valid user and password with select role as Admin.")
+	public void admin_enters_valid_user_and_password_with_select_role_as_admin() {
+		helper.loginDetails();
 	}
 
-	@Then("Admin should land on the home page")
-	public void admin_should_land_on_the_home_page() {
-	 
+	@Then("Admin should be landing to home page")
+	public void admin_should_be_landing_to_home_page() {
 		String actualTitle = loginpg.getPageTitle();
 		Assert.assertEquals("LMS", actualTitle.trim());
 	}
+		
 
 }
