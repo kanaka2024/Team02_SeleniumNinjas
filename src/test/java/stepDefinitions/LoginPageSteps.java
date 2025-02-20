@@ -26,6 +26,7 @@ public class LoginPageSteps {
 
 	@When("Admin enters valid user and password with select role as Admin.")
 	public void admin_enters_valid_user_and_password_with_select_role_as_admin() {
+		loginpg.getloginUrl();
 		helper.loginDetails();
 	}
 
