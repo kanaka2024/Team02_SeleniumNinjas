@@ -12,7 +12,6 @@ import driverFactory.DriverFactory;
 import utils.ConfigReader;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.Scenario;
 
@@ -25,13 +24,13 @@ public class ApplicationHooks {
 
 	public static Logger log = LogManager.getLogger();
 
-	@Before(order = 0)
+	@BeforeAll(order = 0)
 	public static void getProperty() {
 		configReader = new ConfigReader();
 		prop = configReader.init_prop();
 	}
 
-	@Before(order = 1)
+	@BeforeAll(order = 1)
 	public static void launchBrowser() {
 		String browserName = prop.getProperty("browser");
 		driverFactory = new DriverFactory();
@@ -39,7 +38,7 @@ public class ApplicationHooks {
 		
 	}
 
-//	@After(order=0)
+//	@AfterAll(order=1)
 //	public  static void quitBrowser() {
 //		driver.quit();
 //	}
