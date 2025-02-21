@@ -40,20 +40,21 @@ public class ApplicationHooks {
 	}
 	
 	
-//	@AfterAll(order=1)
-//	public  static void quitBrowser() {
-//		driver.quit();
-//	}
+	@AfterAll(order=1)
+	public  static void quitBrowser() {
+		driver.quit();
+	}
 	
-//	@After(order = 1)
-//	public void tearDown(Scenario scenario) {
-//		if(scenario.isFailed()) {
-//			//take screenshot:
-//			String screenshotName = scenario.getName().replaceAll(" ","_");
-//			byte [] sourcePath = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-//			scenario.attach(sourcePath, "image/png", screenshotName);
-//			
-//		}
-//	}
+	@After(order = 1)
+	public void tearDown(Scenario scenario) {
+		if(scenario.isFailed()) {
+			//take screenshot:
+			String screenshotName = scenario.getName().replaceAll(" ","_");
+			byte [] sourcePath = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+			scenario.attach(sourcePath, "image/png", screenshotName);
+			
+		}		
+		
+	}
 
 }
