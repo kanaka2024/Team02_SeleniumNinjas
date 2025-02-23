@@ -18,17 +18,22 @@ public class BatchPageValidation {
 
 	public BatchPageValidation() {
         page = new batchModule(DriverFactory.getDriver()); // Get the driver from driverManager
+		lpage = new LoginPage(DriverFactory.getDriver());
+
     }
-//	@Given("Admin is on dashboard page after Login and Admin clicks {string} Module")
-//	public void admin_is_on_dashboard_page_after_login_and_admin_clicks_module(String string) throws InterruptedException {
-//		System.out.println("Admin");
-//		lpage.getloginUrl();
-//		lpage.getPageTitle();		
-//		   
-//	}
+	
+	
+	@Given("Admin is on the LMS page")
+	public void admin_is_on_the_lms_page() {
+		lpage.getloginUrl();
+		lpage.getPageTitle();
+	}
+	
 	@When("Admin in batch page")
 	public void admin_in_batch_page() {
+		page.landbatchpage();
 		String batchlabel=page.checkBatchpage();
+		System.out.println(batchlabel);
 		Assert.assertEquals(batchlabel, "Batch");
 
 	}
@@ -36,6 +41,7 @@ public class BatchPageValidation {
 	@Then("Validate Title in Batch Page")
 	public void validate_title_in_batch_page() {
 		String title=page.title();
+		System.out.println(title);
 		S_Assert.assertEquals(title, "LMS-Learning Management System", "Title mismatch!");
 		
 

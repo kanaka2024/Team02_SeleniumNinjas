@@ -2,20 +2,22 @@
 
 
 @Batch
-Feature: Batch Page Validation 
-
-  UI validation of the  Batch page
-
-Background:
-
- #	Given Admin is on dashboard page after Login and Admin clicks "batch" Module
+Feature: Batch Page UI Validation 
+ 
+Background:  Verify if user is logged in
+ 
+  Given Admin is on the LMS page
 
 
-  @BatchPageNavigation	
+  @BatchPageValidation
     Scenario: Admin in Batch Page
+  
+  # Given Admin in Home page
   
     When Admin in batch page
     Then Validate Title in Batch Page
+    
+    
     Then Validate Heading in Batch Page
     Then Validate disabled Delete Icon under the header in the Batch Page
     Then Validate pagination in the Batch Page
