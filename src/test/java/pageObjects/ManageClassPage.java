@@ -12,7 +12,13 @@ import org.openqa.selenium.support.PageFactory;
 import utils.Constants;
 
 public class ManageClassPage {
+	
 	private WebDriver driver;
+	
+	public ManageClassPage(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
 
 	@FindBy(xpath = "//input[@id='username']")
 	private WebElement username;
@@ -143,20 +149,13 @@ public class ManageClassPage {
 	private WebElement footerTxt;
 	
 	@FindBy(xpath = "//span[@class='p-paginator-current ng-star-inserted']")
-	private WebElement Pgtntxt ;
-	
-	
-	
+	private WebElement Pgtntxt ;	
 	
 	
 	//By nextPage = By.xpath("//button[text()='2']");
 	 //By DoubleArrowIcon = By.xpath("//span[@class='p-paginator-icon pi pi-angle-double-right']") ;
 
-	public ManageClassPage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-	}
-
+	
 	public void getloginUrl() throws InterruptedException {
 		driver.get(Constants.baseUrl);
 		username.sendKeys("sdetnumpyninja@gmail.com");
