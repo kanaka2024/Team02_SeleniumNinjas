@@ -10,12 +10,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utils.commonFunctions;
 
-public class ClassDetailsVerificationPage {
+public class ClassDetailsValidationPage {
 	
 private WebDriver driver;
 commonFunctions cf;
 	
-	public ClassDetailsVerificationPage(WebDriver driver) {
+	public ClassDetailsValidationPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 		cf=new commonFunctions(driver, 30);
@@ -35,7 +35,7 @@ commonFunctions cf;
 //		alert.accept();
 //	}
 	
-	public void getpopup() {
+	public void getAddClasspopup() {
 		addNewCls.click();	
 		
 	}

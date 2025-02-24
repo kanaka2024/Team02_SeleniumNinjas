@@ -5,15 +5,15 @@ import org.testng.Assert;
 import driverFactory.DriverFactory;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pageObjects.ClassDetailsVerificationPage;
+import pageObjects.ClassDetailsValidationPage;
 
-public class ClassDetailsVerificationSteps {
+public class ClassDetailsValidationSteps {
 	
-	private ClassDetailsVerificationPage CDPage= new ClassDetailsVerificationPage(DriverFactory.getDriver());
+	private ClassDetailsValidationPage CDPage= new ClassDetailsValidationPage(DriverFactory.getDriver());
 
 	@When("Admin clicks on {string} under the class menu bar")
 	public void admin_clicks_on_under_the_class_menu_bar(String string) {
-	    CDPage.getpopup();
+	    CDPage.getAddClasspopup();
 	}
 	
 	@Then("Admin should see a popup  with  heading {string}")

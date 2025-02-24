@@ -2,6 +2,10 @@ package pageObjects;
 
 import static org.testng.Assert.assertTrue;
 
+import java.time.Duration;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -10,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utils.LoggerLoad;
 
@@ -43,7 +49,7 @@ public class AddNewClassPage {
 	private By inactiveStatusRadio = By.xpath("//input[@type='radio' and @id='Inactive']");
 	private By commentsField = By.xpath("//input[@id='classComments']");
 	private By notesField = By.xpath("//input[@id='classNotes']");
-	private By recordingDropdown = By.xpath("//input[@id='classRecordingPath']");
+	private By recordingField = By.xpath("//input[@id='classRecordingPath']");
 	private By saveButton = By.xpath("//span[normalize-space()='Save']");
 	private By cancelButton = By.xpath("//span[normalize-space()='Cancel']");
 	// alert
@@ -61,32 +67,83 @@ public class AddNewClassPage {
 	private By statusReqMsg = By.xpath("//small[normalize-space()='Status is required.']");
 
 	public void enterBatchName(String batchName) {
-		driver.findElement(batchNameField).sendKeys(batchName);
+		if (batchName != "") {
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		    WebElement dropdownButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p-dropdown[@id='batchName']//div[@role='button']")));
+		    dropdownButton.click();
+		    
+		    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@role='listbox']")));
+		    List<WebElement> options = driver.findElements(By.xpath("//ul[@role='listbox']/p-dropdownitem//li"));
+		    for (WebElement option : options) {
+		        if (option.getText().trim().equalsIgnoreCase(batchName.trim())) {
+		            option.click();
+		            return;
+		        }
+		    }
+		    
+		    //throw new NoSuchElementException("Batch Name not found: " + batchName);
+		}
 	}
 
 	public void enterClassTopic(String classTopic) {
-		driver.findElement(classTopicField).sendKeys(classTopic);
+		if (classTopic != "") {
+			driver.findElement(classTopicField).clear();
+			driver.findElement(classTopicField).sendKeys(classTopic);
+		}
 	}
 
 	public void enterClassDescription(String classDescription) {
-		driver.findElement(classDescriptionField).sendKeys(classDescription);
+		if (classDescription != "") {
+			driver.findElement(classDescriptionField).clear();
+			driver.findElement(classDescriptionField).sendKeys(classDescription);
+		}
 	}
 
 	public void selectClassDates(String classDates) throws InterruptedException {
-		driver.findElement(classDatesField).sendKeys(classDates);
-// Press TAB key to move focus away from the date picker
-//	        Actions actions = new Actions(driver);
-//	        actions.sendKeys(Keys.TAB).perform();
-		driver.findElement(classDescriptionField).click();
-		Thread.sleep(1000); // Give UI time to update
+		if (classDates != "") {
+			WebElement dateField = driver.findElement(classDatesField);
+
+			// Clear using JavaScript
+			((JavascriptExecutor) driver).executeScript("arguments[0].value = '';", dateField);
+
+			// Send new date
+			dateField.sendKeys(classDates);
+			Thread.sleep(1000);
+			driver.findElement(By.xpath("//body")).click();
+			Thread.sleep(1000); // Give UI time to update
+		}
 	}
 
 	public void enterNoOfClasses(String noOfClasses) {
-		driver.findElement(noOfClassesField).sendKeys(noOfClasses);
+		if (noOfClasses != "") {
+			driver.findElement(noOfClassesField).clear();
+			driver.findElement(noOfClassesField).sendKeys(noOfClasses);
+		}
 	}
 
 	public void enterStaffName(String staffName) {
-		driver.findElement(staffNameField).sendKeys(staffName);
+		if (staffName != "") {
+			driver.findElement(staffNameField).clear();
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		    WebElement dropdownButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p-dropdown[@id='staffId']//div[@role='button']")));		    
+		    if (dropdownButton != null) {
+				((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", dropdownButton);				
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdownButton);
+			}
+		    //dropdownButton.click();
+		  
+		    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@role='listbox']")));		   
+		    List<WebElement> options = driver.findElements(By.xpath("//ul[@role='listbox']/p-dropdownitem//li"));		  
+		    for (WebElement option : options) {
+		        if (option.getText().trim().equalsIgnoreCase(staffName.trim())) {
+		            option.click(); // Click the option
+		            return;
+		        }
+		    }
+		   
+		    //throw new NoSuchElementException("Staff Name not found: " + staffName);
+		}
 	}
 
 	// Updated method to handle radio button for Status
@@ -97,9 +154,9 @@ public class AddNewClassPage {
 		} else if (status.equalsIgnoreCase("Inactive")) {
 			radioButton = driver.findElement(inactiveStatusRadio);
 		}
-		//	        else {
-		//	            throw new IllegalArgumentException("Invalid status: " + status);
-		//	        }
+		// else {
+		// throw new IllegalArgumentException("Invalid status: " + status);
+		// }
 
 		if (radioButton != null) {
 			// Scroll into view before clicking
@@ -112,15 +169,24 @@ public class AddNewClassPage {
 	}
 
 	public void enterComments(String comments) {
-		driver.findElement(commentsField).sendKeys(comments);
+		if (comments != "") {
+			driver.findElement(commentsField).clear();
+			driver.findElement(commentsField).sendKeys(comments);
+		}
 	}
 
 	public void enterNotes(String notes) {
-		driver.findElement(notesField).sendKeys(notes);
+		if (notes != "") {
+			driver.findElement(notesField).clear();
+			driver.findElement(notesField).sendKeys(notes);
+		}
 	}
 
 	public void selectRecordingOption(String recording) {
-		driver.findElement(recordingDropdown).sendKeys(recording);
+		if (recording != "") {
+			driver.findElement(recordingField).clear();
+			driver.findElement(recordingField).sendKeys(recording);
+		}
 	}
 
 	public void clickSaveButton() {
