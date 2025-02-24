@@ -3,8 +3,7 @@
   <groupId>LMS_Selenium_Project</groupId>
   <artifactId>LMS_Selenium_Project</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  <build>
+ <build>
 	 <plugins>
 		<plugin>
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
@@ -211,6 +210,14 @@
 			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j -->
+<dependency>
+    <groupId>net.sourceforge.tess4j</groupId>
+    <artifactId>tess4j</artifactId>
+    <version>5.15.0</version>
+</dependency>
+
 
 <!--  This is for chaintest report while using chaintest reports comment extentreports
 <dependency>
@@ -229,5 +236,6 @@
          
 		
 
-	</dependencies>
+	</dependencies>  
+
 </project>
