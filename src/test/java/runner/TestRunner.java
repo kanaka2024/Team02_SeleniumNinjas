@@ -8,7 +8,7 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
      features = "src/test/resources/features",
      glue = {"stepDefinitions", "hooks"},
-//     tags = "@Program",
+ tags = "@Batch",
      plugin = {"pretty", "html:target/cucumber-reports.html"}
  )
 public class TestRunner extends AbstractTestNGCucumberTests{
