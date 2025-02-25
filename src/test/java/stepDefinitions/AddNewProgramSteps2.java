@@ -145,7 +145,7 @@ public class AddNewProgramSteps2 {
 	        List<Map<String, String>> testData = excelReader.getData(excelFilePath, SheetName);
 
 	        // Assuming the first row contains the data
-	        Map<String, String> data = testData.get(5);
+	        Map<String, String> data = testData.get(0);
 	        
 
 	        String programName = data.get("ProgramName");
