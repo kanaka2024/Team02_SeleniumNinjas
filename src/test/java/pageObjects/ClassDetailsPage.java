@@ -8,17 +8,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import utils.commonFunctions;
-
 public class ClassDetailsPage {
 	
 private WebDriver driver;
-commonFunctions cf;
+
 	
 	public ClassDetailsPage(WebDriver driver) {
 		this.driver = driver;
-		PageFactory.initElements(driver, this);
-		cf=new commonFunctions(driver, 30);
+		PageFactory.initElements(driver, this);	
 	}
 	
 	@FindBy(xpath = "//span[starts-with(@id, 'pr_id')]")

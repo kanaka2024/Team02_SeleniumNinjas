@@ -1,9 +1,11 @@
 @AddClass
 Feature: Add New Class
-
- Background:
- 	Given Admin is on dashboard page after Login and Admin clicks "Class" button on the navigation bar 	
- 	 When Admin clicks on "Add New Class" under the class menu bar
+ 
+ 	 Background: The user able to land on Home page after entering valid Username and Password fields
+    Given Admin is in LoginPage
+    When Admin enters valid user and password with select role as Admin.
+    When Admin clicks "Class" button on the navigation bar
+    When Admin clicks on "Add New Class" under the class menu bar
 
   @ValidateaddnewclassvalidMandatefields
   Scenario Outline: Validate admin able to add new class with valid data in mandatory fields

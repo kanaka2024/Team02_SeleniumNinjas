@@ -20,15 +20,12 @@ public class ManageClassSteps {
 	private ManageClassPage MCPage = new ManageClassPage(DriverFactory.getDriver());
 	List<String> expectedSortedList;
 
-	@Given("Admin is on dashboard page after Login and Admin clicks {string} button on the navigation bar")
-	public void admin_is_on_dashboard_page_after_login_and_admin_clicks_button_on_the_navigation_bar(String string)
-			throws InterruptedException {
-		System.out.println("Admin");
-		MCPage.getloginUrl();
+	@When("Admin clicks {string} button on the navigation bar")
+	public void admin_clicks_button_on_the_navigation_bar(String string) throws InterruptedException {
 		Thread.sleep(2000);
 		MCPage.Classbutton();
-
 	}
+
 
 	@Then("The page title should be {string}")
 	public void the_page_title_should_be(String expectedTitle) {
