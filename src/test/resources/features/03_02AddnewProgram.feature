@@ -55,17 +55,14 @@ Feature: Program module
     Then Admin gets error message 
     
     @SuccessfulAddnewProgram
-    Scenario: Verify Admin is able to save the program details
-    
-    Given Admin is on ProgamPage
+    Scenario Outline: Verify Admin is able to save the program details
+     Given Admin is on ProgamPage
     When Admin clicks on Add New Program under the Program menu bar
     Then  Enter the details to create a new program "<SheetName>"
     Then Admin gets message Successful Program created
-
-    
     Examples: 
       |SheetName|
-      |Program| 
+      |AddProgram| 
       
    @'X'button
   Scenario: Verify the cancel button without entering any details
