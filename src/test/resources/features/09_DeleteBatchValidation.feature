@@ -3,9 +3,10 @@
 
   @Batch
 Feature: Delete Batch Validation
-  Background:  Verify if user is logged in
+ Background: The user able to land on Home page after entering valid Username and Password fields
+    Given Admin is in LoginPage
+    When Admin enters valid user and password with select role as Admin.
  
-  Given Admin is on the LMS page  
     
   @DeleteBatchValidation
   

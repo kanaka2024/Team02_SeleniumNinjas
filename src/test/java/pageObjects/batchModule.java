@@ -120,8 +120,13 @@ public class batchModule {
 	}
 
 	public boolean H_deleteIcon() {
-		WebElement deleteicon = comMethod.visibilityOfElementLocated(B_Delete);
-		return deleteicon.isDisplayed();
+		
+	       WebElement deleteicon = comMethod.visibilityOfElementLocated(B_Delete);
+			return deleteicon.isDisplayed();
+		
+		
+		
+
 	}
 
 	public boolean pageNavigate() {
@@ -218,7 +223,9 @@ public class batchModule {
 	public String addbatchUI() {
 
 		landbatchpage();
-		WebElement Add = comMethod.presenceOfElementLocated(Addbatch);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement Add = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@role='menuitem']")));
+//		WebElement Add = comMethod.presenceOfElementLocated(Addbatch);
 
 		String name = Add.getText();
 

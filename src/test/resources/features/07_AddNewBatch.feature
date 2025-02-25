@@ -17,7 +17,7 @@ Feature: Add New Batch
    |MandatoryFields        |Batch| 
    |MandatoryFields        |Batch| 
    |WithoutBatchNameFields |Batch| 
-   |WithoutDescripFields |Batch| 
+   |WithoutDescripFields   |Batch| 
    |WithoutNumberClassFields |Batch| 
    |Alreadyexists          |Batch| 
    

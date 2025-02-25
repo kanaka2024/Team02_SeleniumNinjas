@@ -24,12 +24,8 @@ public class BatchPageValidation {
     }
 	
 	
-	@Given("Admin is on the LMS page")
-	public void admin_is_on_the_lms_page() {
-		lpage.getloginUrl();
-		lpage.getPageTitle();
-	
-		
+	@Given("Admin in Batch Home Page")
+	public void admin_in_Batch_Home_Page() {
 	}
 	
 	@When("Admin in batch page")
@@ -58,6 +54,7 @@ public class BatchPageValidation {
 	}
 	@Then("Validate disabled Delete Icon under the header in the Batch Page")
 	public void validate_disabled_under_the_header_in_the_batch_page() {
+		
     boolean deleteicon=page.H_deleteIcon();
     S_Assert.assertTrue(deleteicon);
 	 

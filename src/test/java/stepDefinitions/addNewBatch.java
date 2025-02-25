@@ -12,23 +12,28 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.LoginPage;
 import pageObjects.batchModule;
+import utils.CommonFunctions;
 
 public class addNewBatch {
 
 	private batchModule page;
 	private SoftAssert S_Assert = new SoftAssert();
-	private LoginPage lpage;
+	private LoginPage loginpg;
+	public CommonFunctions comMethod;
+
 
 	public addNewBatch() {
 		page = new batchModule(DriverFactory.getDriver()); // Get the driver from driverManager
-		lpage = new LoginPage(DriverFactory.getDriver());
+		loginpg = new LoginPage(DriverFactory.getDriver());
+		this.comMethod = new CommonFunctions(DriverFactory.getDriver(), 20);
+
 
 	}
 
 	@Given("Admin in Home page")
 	public void admin_in_Home_page() {
-		lpage.getloginUrl();
-		lpage.getPageTitle();
+		loginpg.getloginUrl();
+		comMethod.loginDetails();
 
 	}
 
@@ -53,7 +58,10 @@ public class addNewBatch {
 
 			S_Assert.assertTrue(batchStatus.getMessage().contains("Successful"));
 
-		} else if (testCase.equalsIgnoreCase("WithoutProgramNameField")) {
+
+		}
+		
+		else if (testCase.equalsIgnoreCase("WithoutProgramNameField")) {
 
 			S_Assert.assertEquals(page.getInlineErrorMessageProgramName(), "Program Name is required.");
 

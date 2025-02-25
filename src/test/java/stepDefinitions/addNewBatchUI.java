@@ -3,6 +3,7 @@ package stepDefinitions;
 import org.testng.asserts.SoftAssert;
 
 import driverFactory.DriverFactory;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.LoginPage;
@@ -18,6 +19,11 @@ public class addNewBatchUI {
 		page = new batchModule(DriverFactory.getDriver()); // Get the driver from driverManager
 		lpage = new LoginPage(DriverFactory.getDriver());
 
+	}
+	
+	@Given ("Admin in Batch Home page")
+	public void Admin_in_Batch_Home_page() {
+		
 	}
 
 	@When("Admin clicks {string} on the navigation bar")
