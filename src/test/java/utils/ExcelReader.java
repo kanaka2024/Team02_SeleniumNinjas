@@ -38,7 +38,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import utils.batchRecords;
+
 
 public class ExcelReader {
 	
@@ -191,8 +191,42 @@ public class ExcelReader {
 	 @Data
 	    @AllArgsConstructor
 	    public static class batchRecords {
-		    private String testCase;
-	        private String programName;
+		    public batchRecords(String testCase2, String programName2, String batchNo, String description2,
+				String classcount) {
+			// TODO Auto-generated constructor stub
+		}
+			private String testCase;
+	        public String getTestCase() {
+				return testCase;
+			}
+			public void setTestCase(String testCase) {
+				this.testCase = testCase;
+			}
+			public String getProgramName() {
+				return programName;
+			}
+			public void setProgramName(String programName) {
+				this.programName = programName;
+			}
+			public String getBatchName() {
+				return batchName;
+			}
+			public void setBatchName(String batchName) {
+				this.batchName = batchName;
+			}
+			public String getDescription() {
+				return description;
+			}
+			public void setDescription(String description) {
+				this.description = description;
+			}
+			public String getNoOfClass() {
+				return noOfClass;
+			}
+			public void setNoOfClass(String noOfClass) {
+				this.noOfClass = noOfClass;
+			}
+			private String programName;
 	        private String batchName;
 	        private String description;
 	        private String noOfClass;
@@ -202,7 +236,19 @@ public class ExcelReader {
 	@Data
    @NoArgsConstructor
    public static class BatchRecordsStatus {
-       private String batchName;
+       public String getBatchName() {
+			return batchName;
+		}
+		public void setBatchName(String batchName) {
+			this.batchName = batchName;
+		}
+		public String getMessage() {
+			return message;
+		}
+		public void setMessage(String message) {
+			this.message = message;
+		}
+	private String batchName;
        private String message;
 		
    }
@@ -210,7 +256,7 @@ public class ExcelReader {
 		public List<batchRecords> readExcel_LMSPrograms(String SheetName) throws IOException {
 
 			
-			String path = System.getProperty("user.dir") + "/src/test/resources/TestData/Testdata2.xlsx";
+			String path = System.getProperty("user.dir") + "/src/test/resources/TestData/Testdata.xlsx";
 
 			File Excelfile = new File(path);
 			List<batchRecords> batchRecordlist = new ArrayList<>();
