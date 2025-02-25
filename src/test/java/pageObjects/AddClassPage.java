@@ -19,11 +19,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utils.LoggerLoad;
 
-public class AddNewClassPage {
+public class AddClassPage {
 
 	private WebDriver driver;
 
-	public AddNewClassPage(WebDriver driver) {
+	public AddClassPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
@@ -32,12 +32,10 @@ public class AddNewClassPage {
 
 	@FindBy(xpath = "//button[normalize-space()='Add New Class']")
 	private WebElement addNewCls;
-
 	@FindBy(xpath = "//pre[@id='classdetail']")
 	private WebElement OutputclassdetailChk;
 	@FindBy(xpath = "/span[@class='p-dialog-header-close-icon ng-tns-c81-15 pi pi-times']")
 	private WebElement closeButton;
-
 	private By batchNameField = By.xpath("//input[@placeholder='Select a Batch Name']");
 	private By classTopicField = By.xpath("//input[@id='classTopic']");
 	private By classDescriptionField = By.xpath("//input[@id='classDescription']");
@@ -137,7 +135,7 @@ public class AddNewClassPage {
 		    List<WebElement> options = driver.findElements(By.xpath("//ul[@role='listbox']/p-dropdownitem//li"));		  
 		    for (WebElement option : options) {
 		        if (option.getText().trim().equalsIgnoreCase(staffName.trim())) {
-		            option.click(); // Click the option
+		            option.click(); 
 		            return;
 		        }
 		    }
@@ -161,8 +159,7 @@ public class AddNewClassPage {
 		if (radioButton != null) {
 			// Scroll into view before clicking
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", radioButton);
-			Thread.sleep(500); // Small wait for UI stability
-
+			Thread.sleep(500);
 			// Click using JavaScriptExecutor
 			((JavascriptExecutor) driver).executeScript("arguments[0].click();", radioButton);
 		}
@@ -197,10 +194,6 @@ public class AddNewClassPage {
 	public String toastMsg() {
 		return driver.findElement(toastmsg).getText();
 	}
-
-//	public void closeToast() {
-//		driver.findElement(toastmsgcls).click();
-//	}
 
 	public String getNumOfClasses() {
 		WebElement inputField = driver.findElement(noOfClassesField);

@@ -1,21 +1,23 @@
 package utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import driverFactory.DriverFactory;
-import pageObjects.AddNewClassPage;
+import pageObjects.AddClassPage;
 
 public class ClassDataHelper {
 	private static String createdClassTopic;
 	private ExcelReader excelReader;
-	private AddNewClassPage ANCPage;
+	private AddClassPage ANCPage;
 	private String expectedResult;
 
 	// Constructor to initialize ExcelReader
 	public ClassDataHelper() {
 		this.excelReader = new ExcelReader();
-		this.ANCPage = new AddNewClassPage(DriverFactory.getDriver());
+		this.ANCPage = new AddClassPage(DriverFactory.getDriver());
 	}
 
 	public String fillFormData(String sheetName, String testCase, boolean isAdd) throws InterruptedException {
@@ -28,8 +30,8 @@ public class ClassDataHelper {
 
 				if (isAdd) {
 					ANCPage.enterBatchName(data.get("BatchName")); // To do: get Batch name from Anusuya
-					ANCPage.enterClassTopic(data.get("ClassTopic"));
-					classTopic=data.get("ClassTopic");
+					classTopic=makeClassTopicUnique(data.get("ClassTopic"));
+					ANCPage.enterClassTopic(classTopic);					
 				}
 
 				ANCPage.enterClassDescription(data.get("ClassDescription"));
@@ -55,6 +57,14 @@ public class ClassDataHelper {
 	
 	public String getExpectedResult() {
 		return expectedResult;
+	}
+	
+	private String makeClassTopicUnique(String topic) {
+		if (topic != "") {
+			String timestamp = new SimpleDateFormat("YYddHHmmss").format(new Date());
+			return topic+timestamp;
+		} else
+			return "";
 	}
 
 }

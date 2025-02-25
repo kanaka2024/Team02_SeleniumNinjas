@@ -10,12 +10,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utils.commonFunctions;
 
-public class ClassDetailsValidationPage {
+public class ClassDetailsPage {
 	
 private WebDriver driver;
 commonFunctions cf;
 	
-	public ClassDetailsValidationPage(WebDriver driver) {
+	public ClassDetailsPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 		cf=new commonFunctions(driver, 30);

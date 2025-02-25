@@ -15,13 +15,14 @@ import driverFactory.DriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pageObjects.AddNewClassPage;
+import pageObjects.AddClassPage;
 import utils.ClassDataHelper;
 import utils.ExcelReader;
+import utils.LoggerLoad;
 
-public class AddNewClassPageSteps {
+public class AddClassSteps {
 
-	private AddNewClassPage ANCPage = new AddNewClassPage(DriverFactory.getDriver());
+	private AddClassPage ANCPage = new AddClassPage(DriverFactory.getDriver());
 	ClassDataHelper classDataHelper = new ClassDataHelper();
 	ExcelReader exlReader = new ExcelReader();
 	private String newClassTopic = "";	
@@ -31,16 +32,16 @@ public class AddNewClassPageSteps {
 	public void admin_enters_all_mandatory_field_values_with_valid_data_and_clicks_save_button_and(String testCase,
 			String sheetName) throws InterruptedException {
 		newClassTopic = classDataHelper.fillFormData(sheetName, testCase, true);
-
 		ANCPage.clickSaveButton();
 	}
 
 	@Then("Admin should see new class details is added in the data table")
 	public void admin_should_see_new_class_details_is_added_in_the_data_table() {
-		System.out.println("New class successfully added!");
+		LoggerLoad.info("New class successfully added!");
 		String message = ANCPage.toastMsg();
-		System.out.println(message);
+		LoggerLoad.info(message);
 		ClassDataHelper.setCreatedClassTopic(newClassTopic);
+		LoggerLoad.info("Admin should see Class details");
 		Assert.assertTrue(message.contains("Success"));
 	}
 
@@ -54,9 +55,9 @@ public class AddNewClassPageSteps {
 
 	@Then("Error message should appear in alert")
 	public void error_message_should_appear_in_alert() {
-		System.out.println("Admin gets Error message");
+		LoggerLoad.info("Admin gets Error message");
 		String message = ANCPage.toastMsg();
-		System.out.println(message);
+		LoggerLoad.info(message);
 		Assert.assertTrue(message.contains("Error"));
 	}
 
@@ -69,7 +70,7 @@ public class AddNewClassPageSteps {
 	@Then("Admin should see no of class value is added automatically")
 	public void admin_should_see_no_of_class_value_is_added_automatically() {
 		String value = ANCPage.getNumOfClasses();
-		System.out.println(value);
+		LoggerLoad.info(value);
 		assertEquals(value, classDataHelper.getExpectedResult());
 
 	}
@@ -87,6 +88,7 @@ public class AddNewClassPageSteps {
 		// Verify that Saturday (Sa) and Sunday (Su) are disabled
 		for (WebElement weekend : weekendDates) {
 			String dateText = weekend.getText();
+			LoggerLoad.info("weekends dates are disabled to select");
 			Assert.assertTrue(weekend.getAttribute("class").contains("p-disabled"),
 					"Weekend date " + dateText + " is not disabled!");
 		}
@@ -104,15 +106,21 @@ public class AddNewClassPageSteps {
 			String fieldName) {
 		if (fieldName == "BatchName") {
 			Assert.assertTrue(ANCPage.isBatchNameFieldReq());
+			LoggerLoad.info("should see an error message below mandatory field BatchName");
 		} else if (fieldName == "ClassTopic") {
 			Assert.assertTrue(ANCPage.isClassTopicFieldReqMsg());
+			LoggerLoad.info("should see an error message below mandatory field ClassTopic");
 		} else if (fieldName == "ClassDates") {
 			Assert.assertTrue(ANCPage.isClassDatesReqMsg());
+			LoggerLoad.info("should see an error message below mandatory field ClassDates ");
 		} else if (fieldName == "StaffName") {
 			Assert.assertTrue(ANCPage.isStaffNameReqMsg());
+			LoggerLoad.info("should see an error message below mandatory field StaffName");
 		} else if (fieldName == "Status") {
 			Assert.assertTrue(ANCPage.isStatusReqMsg());
+			LoggerLoad.info("should see an error message below mandatory field Status");
 		}
+		
 
 	}
 

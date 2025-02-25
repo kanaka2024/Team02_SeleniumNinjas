@@ -21,6 +21,17 @@ Feature: Manage Class Page Verification
       Scenario: Verify Datatable footer text is displayed
       Then Admin should see Total no of classes in below of the data table.
       
+     @Sorting
+     Scenario Outline: Verify sorting functionality in Class grid
+	    When User clicks on the "<column>" header to sort
+	    Then The grid should display sorted results based on "<column>"
+	
+			Examples:
+		    | column      			|
+		    | batchName   		  |
+		    | classTopic   		  |
+		   
+			      
       
 	      
       

@@ -12,7 +12,7 @@ Feature: Add New Class
 
     Examples: 
       | TestCase                  | Sheetname        |
-      | AllMandateFieldsValidData | classDetailsForm |
+      | AllMandateFieldsValidData | Class						 |
       
   @ValidateaddnewclassinvalidMandatefields
   Scenario Outline: Validate admin able to add new class with invalid data in mandatory fields
@@ -21,7 +21,7 @@ Feature: Add New Class
 
     Examples: 
       | TestCase                     | Sheetname        |
-      | ValidateInvalidMandatefields | classDetailsForm |
+      | ValidateInvalidMandatefields | Class					  |
       
   @validateNumOfClasses
   Scenario Outline: Validate admin able to add new class with invalid data in mandatory fields
@@ -31,7 +31,7 @@ Feature: Add New Class
 
     Examples: 
       | TestCase                   | Sheetname        |
-      | ValidateNumOfClasses       | classDetailsForm |
+      | ValidateNumOfClasses       | Class					  |
       
   @DatePickerValidation
   Scenario: Verify weekends are disabled in the date picker   
@@ -45,11 +45,11 @@ Feature: Add New Class
     
     Examples: 
     | TestCase   				        | FieldName     | Sheetname        |
-		| BatchFieldReqVerification | BatchName		  | classDetailsForm |
-		| ClassTopicReqVerification | ClassTopic 	  | classDetailsForm |
-		| ClassDatesReqVerification | ClassDates 	  | classDetailsForm |
-		| StaffNameReqVerification  | StaffName 	  | classDetailsForm |
-		| StatusReqVerification     | Status 		    | classDetailsForm |
+		| BatchFieldReqVerification | BatchName		  | Class					  |
+		| ClassTopicReqVerification | ClassTopic 	  | Class					  |
+		| ClassDatesReqVerification | ClassDates 	  | Class					  |
+		| StaffNameReqVerification  | StaffName 	  | Class					  |
+		| StatusReqVerification     | Status 		    | Class					  |
 		      
       
     
