@@ -5,8 +5,11 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -14,16 +17,21 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driverFactory.DriverFactory;
+import utils.ExcelReader.BatchRecordsStatus;
 import utils.CommonFunctions;
 import utils.ExcelReader;
-//import utils.batchRecords;
 import utils.ExcelReader.batchRecords;
+
 
 public class batchModule {
 	public WebDriver driver;
 	public CommonFunctions comMethod;
 	public WebDriverWait wait;
 	public ExcelReader readbatch = new ExcelReader();
+	 public static String Firstbatchname;
+	 public static String Secondbatchname;
+	 public static String AddedBatchname;
+	 
 
 	// Locators
 	By batchButton = By.xpath("//*[@class='ng-star-inserted']/button[3]");
@@ -230,60 +238,134 @@ public class batchModule {
 
 	// -----------------------------Add New Batch----------------------//
 
-	public String addbatch(String Pname) throws IOException {
-
+	public BatchRecordsStatus addbatch(String Pname, String testCase) throws IOException {
+		
 		List<batchRecords> batchRecordlist = new ArrayList<>();
 		batchRecordlist = readbatch.readExcel_LMSPrograms(Pname);
-
+		
 		try {
 			if (batchRecordlist != null) {
 
 				for (batchRecords record : batchRecordlist) {
-					landbatchpage();
-					batchaddclick();
-					WebElement batch_progmatch = comMethod.presenceOfElementLocated(batchprogmatch);
-					batch_progmatch.clear();
-					WebElement batchprog_dropdown = comMethod.presenceOfElementLocated(batchprogdropdown);
-					batchprog_dropdown.click();
-					List<WebElement> BatchpageProgList = comMethod.presenceOfElementsLocated(batchproglist);
-					System.out.println("BatchpageProgList Size: " + BatchpageProgList.size());
-					// Iterate through options and add text to the list
-					for (int i = 0; i <= BatchpageProgList.size() - 1; i++) {
-						String B_ProgName = BatchpageProgList.get(i).getText();
-						// System.out.println("BatchpageProgList: "+B_ProgName);
-						if (B_ProgName.equalsIgnoreCase(record.getProgramName())) {
-							BatchpageProgList.get(i).click();
-							break;
+					if(record.getTestCase().equalsIgnoreCase(testCase)) {
+						landbatchpage();
+						batchaddclick();
+						BatchRecordsStatus batchStatus = new BatchRecordsStatus();
+						
+						WebElement batch_progmatch = comMethod.presenceOfElementLocated(batchprogmatch);
+						batch_progmatch.clear();
+						WebElement batchprog_dropdown = comMethod.presenceOfElementLocated(batchprogdropdown);
+						batchprog_dropdown.click();
+						List<WebElement> BatchpageProgList = comMethod.presenceOfElementsLocated(batchproglist);
+						System.out.println("BatchpageProgList Size: " + BatchpageProgList.size());
+						// Iterate through options and add text to the list
+						for (int i = 0; i <= BatchpageProgList.size() - 1; i++) {
+							String B_ProgName = BatchpageProgList.get(i).getText();
+							// System.out.println("BatchpageProgList: "+B_ProgName);
+							if (B_ProgName.equalsIgnoreCase(record.getProgramName()))
+							{
+								 Firstbatchname=record.getProgramName();
+								BatchpageProgList.get(i).click();
+								break;
+							}
+
 						}
 
+						// Log.info("Batch Extracted from the excel");
+						WebElement batchB_Name2 = comMethod.presenceOfElementLocated(batchBName2);
+						// batchB_Name2.click();
+						batchB_Name2.sendKeys(record.getBatchName());
+						 Secondbatchname=record.getBatchName();
+						// Log.info("batch no is entering");
+						WebElement batch_Desc = comMethod.visibilityOfElementLocated(batchDesc);
+						batch_Desc.sendKeys(record.getDescription());
+						WebElement batchstatus_Active = comMethod.elementToBeClickable(batchstatusActive);
+						batchstatus_Active.click();
+						WebElement batch_NoOfClass = comMethod.presenceOfElementLocated(batchNoOfClass);
+						batch_NoOfClass.sendKeys(record.getNoOfClass());
+						// batchprogramName.sendKeys("ChatBotTest");
+						WebElement batch_Savebutton = comMethod.elementToBeClickable(batchSavebutton);
+						batch_Savebutton.click();
+						
+						
+						// Handle alerts 
+						
+						String Succes_msg = handlealert();
+						String finalbname = Firstbatchname + Secondbatchname;
+						batchStatus.setBatchName(finalbname);
+						setAddedBatchname(finalbname);
+						batchStatus.setMessage(Succes_msg);
+						return batchStatus;
 					}
-
-					// Log.info("Batch Extracted from the excel");
-					WebElement batchB_Name2 = comMethod.presenceOfElementLocated(batchBName2);
-					// batchB_Name2.click();
-
-					batchB_Name2.sendKeys(record.getBatchName());
-					// Log.info("batch no is entering");
-					WebElement batch_Desc = comMethod.visibilityOfElementLocated(batchDesc);
-					batch_Desc.sendKeys(record.getDescription());
-					WebElement batchstatus_Active = comMethod.elementToBeClickable(batchstatusActive);
-					batchstatus_Active.click();
-					WebElement batch_NoOfClass = comMethod.presenceOfElementLocated(batchNoOfClass);
-					batch_NoOfClass.sendKeys(record.getNoOfClass());
-					// batchprogramName.sendKeys("ChatBotTest");
-					WebElement batch_Savebutton = comMethod.elementToBeClickable(batchSavebutton);
-					batch_Savebutton.click();
 				}
 			}
-		} catch (Exception e) {
-			System.out.println("Record completed");
+		} 
+		
+		catch (Exception e) {
+			System.out.println("Error processing batch records");
 		}
-		String Succes_msg = handlealert();
+		
+		return null;	
+	}
+	
+	By missingMandatory=By.xpath("//*[@class='p-invalid ng-star-inserted']");
+	public boolean formFieldInlineError() {
+		List<WebElement> missingMandatoryFields = comMethod.visibilityOfAllElementsLocated(missingMandatory);
+		
+	    if(!missingMandatoryFields.isEmpty()) {
+	    	return true;
+	    } else {
+	    	return false;
+	    }
+	   
+	}
+	By BatchNamereq=By.xpath("//small[text()='Batch Name is required.']");
+	public String getInlineErrorMessageBatchName()
+	{	
+		String bnamereq=driver.findElement(BatchNamereq).getText() ;
+		
+		return bnamereq;
+			
+	}
+	By ProgramNamereq=By.xpath("//small[text()='Program Name is required.']");
 
-		return Succes_msg;
+	public String getInlineErrorMessageProgramName()
+	{	
+		String pnamereq=driver.findElement(ProgramNamereq).getText() ;
+		
+		return pnamereq;
+			
+	}
+	By Descreq=By.xpath("//small[text()='Batch Description is required.']");
 
+	public String getInlineErrorMessageDesc()
+	{	
+		String pnamereq=driver.findElement(Descreq).getText() ;
+		
+		return pnamereq;
+			
+	}
+	
+	By NumberClassreq=By.xpath("//small[text()='Number of classes is required.']");
+
+	public String getInlineErrorMessageClassNum()
+	{	
+		String pnamereq = driver.findElement(NumberClassreq).getText() ;
+		
+		return pnamereq;
+			
+	}
+	
+
+	public static String getAddedBatchname() {
+		return AddedBatchname;
 	}
 
+	public static void setAddedBatchname(String addedBatchname) {
+		AddedBatchname = addedBatchname;
+	}
+	
+	
 	public String handlealert() {
 		By toastLocator = By.cssSelector("div.p-toast-message-content[role='alert']");
 
@@ -296,7 +378,10 @@ public class batchModule {
 		System.out.println("Toast Message: " + toastMessage);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(toastLocator));
 		return toastMessage;
+		
+		
 	}
+	
 	
 	
 	
@@ -317,6 +402,56 @@ public class batchModule {
 		    System.out.println("No delete icons found.");
 		    return false; // Return false if no delete icons are found
 		}
+	}
+	
+	By checkdeletelist=By.xpath("//div[@class='p-checkbox p-component']");
+	public boolean firstcheckboxdeleteIconclicked()
+
+	{
+		List<WebElement> checkdeleteiconUI = comMethod.visibilityOfAllElementsLocated(checkdeletelist);
+
+		// Check if the list is not empty before interacting
+		if (!checkdeleteiconUI.isEmpty()) {
+			checkdeleteiconUI.get(1).click(); // Click the first checkox delete icon in the row
+		    return true; // Return true if clicked successfully
+		} else {
+		    System.out.println("No delete icons found.");
+		    return false; // Return false if no delete icons are found
+		}
+	}
+	
+	By multiplecheckdeletelist=By.xpath("//*[@class='p-datatable-thead']/tr/th/p-tableheadercheckbox");
+
+	public boolean multiplecheckboxdeleteIconclicked()
+
+	{
+		List<WebElement> multicheckdeleteiconUI = comMethod.visibilityOfAllElementsLocated(multiplecheckdeletelist);
+		// Check if the list is not empty before interacting
+		if (!multicheckdeleteiconUI.isEmpty()) {
+
+			multicheckdeleteiconUI.get(0).click(); 
+		    return true; // Return true if clicked successfully
+		} else {
+		    System.out.println("No delete icons found.");
+		    return false; // Return false if no delete icons are found
+		}
+	}
+	
+	By multidelete=By.xpath("//button[@class='p-button-danger p-button p-component p-button-icon-only']");
+	public boolean multideleteclick() {
+		
+		WebElement mdelete=comMethod.presenceOfElementLocated(multidelete);
+		mdelete.click();
+		return true;
+		
+	}
+	By yesmultideleteConfirm=By.xpath("//span[text()='Yes']");
+
+	public void multiConfirmDeleteYes()
+	{
+		WebElement yesmulconfirm = comMethod.presenceOfElementLocated(yesmultideleteConfirm);
+		yesmulconfirm.click();
+		
 	}
 	
 	
@@ -358,8 +493,9 @@ public class batchModule {
 	
 	
 	public String Deletedhandlealert() {
-		By deletetoastLocator = By.cssSelector("p-toast-message-text ng-tns-c20-25 ng-star-inserted");
-
+		By deletetoastLocator = By.xpath("//div[text()='Successful']");
+				//div[@class='p-toast-summary ng-tns-c20-39']");
+	//p-toast-message-text ng-tns-c20-25 ng-star-inserted
 		// Wait for the toast to appear
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 		WebElement toastElement = wait.until(ExpectedConditions.visibilityOfElementLocated(deletetoastLocator));
@@ -371,6 +507,112 @@ public class batchModule {
 		return toastMessage1;
 	}
 	
+	//----------------------------Search Text Box-------------->
 	
+	By SearchTxt=By.xpath("//*[@id='filterGlobal']");
+	By SearchtxtinGrid=By.xpath("//*[@class='p-datatable-tbody']/tr/td[2]");
 	
-}
+	public void searchtext()
+   	{
+
+   	   JavascriptExecutor js = (JavascriptExecutor) driver;
+       js.executeScript("document.elementFromPoint(0, 0).click();");
+   		WebElement Searchtext=comMethod.presenceOfElementLocated(SearchTxt);
+   		Searchtext.click();
+   		Searchtext.sendKeys(getAddedBatchname());
+
+   	}
+   	
+   		public boolean searchtextvalidation() {	
+   		    try {
+   		        // Retry mechanism to handle StaleElementReferenceException
+   		        for (int attempt = 0; attempt < 3; attempt++) {  // Retry up to 3 times
+   		            try {
+   		                List<WebElement> searchingrid = comMethod.visibilityOfAllElementsLocated(SearchtxtinGrid);
+   		                
+   		                if (searchingrid == null || searchingrid.isEmpty()) {
+   		                    System.out.println("Grid is null or empty");
+   		                    return false;
+   		                }
+
+   		                String expectedText = getAddedBatchname();
+   		                if (expectedText == null) {
+   		                    System.out.println("Property 'batchsearchtext' is null");
+   		                    return false;
+   		                }
+
+   		                for (WebElement e : searchingrid) {
+   		                    String text = e.getText().trim();  // Trim to avoid whitespace mismatches
+   		                    
+   		                    if (text.equalsIgnoreCase(expectedText)) {
+   		                        System.out.println("Batch found in grid: " + text);
+   		                        return true; // Success
+   		                    }
+   		                }
+
+   		                System.out.println("Searched text not found in grid");
+   		                return false; // If no match found
+
+   		            } catch (StaleElementReferenceException e) {
+   		                System.out.println("Retry due to StaleElementReferenceException (Attempt " + (attempt + 1) + ")");
+   		            }
+   		        }
+   		    } catch (Exception e) {
+   		        System.out.println("Unexpected exception: " + e.getMessage());
+   		    }
+   		    
+   		    return false;  // Default return if all attempts fail
+   		}
+   	
+//-------------------------------Edit Batch Record---------------------//
+
+	public void FillFormData(String sheetName, String testCase)  {
+		
+		List<Map<String, String>> exlData = readbatch.getData("./src/test/resources/TestData/TestData2.xlsx", sheetName);
+		// System.out.println(exlData.size());
+
+		for (Map<String, String> data : exlData) {
+			
+			if (data.get("TestCase").equalsIgnoreCase(testCase)) {
+				System.out.println("Test Data Found: " + data);
+
+				// Enter values from Excel into UI fields
+				WebElement batch_progmatch = comMethod.presenceOfElementLocated(batchprogmatch);
+				batch_progmatch.clear();
+				WebElement batchprog_dropdown = comMethod.presenceOfElementLocated(batchprogdropdown);
+				batchprog_dropdown.click();
+				List<WebElement> BatchpageProgList = comMethod.presenceOfElementsLocated(batchproglist);
+				System.out.println("BatchpageProgList Size: " + BatchpageProgList.size());
+				// Iterate through options and add text to the list
+				for (int i = 0; i <= BatchpageProgList.size() - 1; i++) {
+					String B_ProgName = BatchpageProgList.get(i).getText();
+					// System.out.println("BatchpageProgList: "+B_ProgName);
+					if (B_ProgName.equalsIgnoreCase(((batchRecords) data).getProgramName()))
+					{
+						 Firstbatchname=((batchRecords) data).getProgramName();
+						BatchpageProgList.get(i).click();
+						break;
+					}
+
+				}
+
+				// Log.info("Batch Extracted from the excel");
+				WebElement batchB_Name2 = comMethod.presenceOfElementLocated(batchBName2);
+				// batchB_Name2.click();
+				batchB_Name2.sendKeys(((batchRecords) data).getBatchName());
+				 Secondbatchname=((batchRecords) data).getBatchName();
+				// Log.info("batch no is entering");
+				WebElement batch_Desc = comMethod.visibilityOfElementLocated(batchDesc);
+				batch_Desc.sendKeys(((batchRecords) data).getDescription());
+				WebElement batchstatus_Active = comMethod.elementToBeClickable(batchstatusActive);
+				batchstatus_Active.click();
+				WebElement batch_NoOfClass = comMethod.presenceOfElementLocated(batchNoOfClass);
+				batch_NoOfClass.sendKeys(((batchRecords) data).getNoOfClass());
+				// batchprogramName.sendKeys("ChatBotTest");
+				WebElement batch_Savebutton = comMethod.elementToBeClickable(batchSavebutton);
+				batch_Savebutton.click();
+
+
+			}
+		}
+	}}

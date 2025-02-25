@@ -1,5 +1,27 @@
 package utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.NumberToTextConverter;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,22 +37,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-//import utils.batchRecords;
+import lombok.NoArgsConstructor;
+import utils.batchRecords;
 
 public class ExcelReader {
 	
-	 @Data
-	    @AllArgsConstructor
-	    public static class batchRecords {
-	        private String programName;
-	        private String batchName;
-	        private String description;
-	        private String noOfClass;
-			
-	    }
 
-	
-/*
 	public String path;
 	public FileInputStream fis = null;
 	public FileOutputStream fileOut = null;
@@ -65,7 +77,7 @@ public class ExcelReader {
 		}
 		return workbook;
 	}
-	private List<Map<String, String>> readSheet(Sheet sheet) {
+	public List<Map<String, String>> readSheet(Sheet sheet) {
 		Row row;
 		int totalRow = sheet.getPhysicalNumberOfRows();
 		List<Map<String, String>> excelRows = new ArrayList<Map<String, String>>();
@@ -168,11 +180,32 @@ public class ExcelReader {
 		return columnMapdata;
 	}
 	
-	*/
+	
 	
 	//------------------------------Add New Batch read from Excel ----------------------//
 	
 	// Batch Module
+	
+	
+
+	 @Data
+	    @AllArgsConstructor
+	    public static class batchRecords {
+		    private String testCase;
+	        private String programName;
+	        private String batchName;
+	        private String description;
+	        private String noOfClass;
+			
+	    }
+
+	@Data
+   @NoArgsConstructor
+   public static class BatchRecordsStatus {
+       private String batchName;
+       private String message;
+		
+   }
 
 		public List<batchRecords> readExcel_LMSPrograms(String SheetName) throws IOException {
 
@@ -206,6 +239,7 @@ public class ExcelReader {
 				e.printStackTrace();
 			}
 			System.out.println("read batch list values : " + batchRecordlist);
+			System.out.println("###### BATCH LIST SIZE : " + batchRecordlist.size());
 			return batchRecordlist;
 		}
 		
@@ -222,11 +256,14 @@ public class ExcelReader {
 			for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 				XSSFRow row = sheet.getRow(i);
 				if (row != null) {
-					String ProgramName = row.getCell(0) != null ? row.getCell(0).getStringCellValue().trim() : "";
-					String BatchNo = row.getCell(1) != null ? getCellData(row.getCell(1)) : "";
-					String Description = row.getCell(2) != null ? row.getCell(2).getStringCellValue().trim() : "";
-					String Classcount = row.getCell(3) != null ? getCellData(row.getCell(3)) : "";
-					batchRecordlist.add(new batchRecords(ProgramName, BatchNo, Description, Classcount));
+					
+					String TestCase=row.getCell(0)!=null ? row.getCell(0).getStringCellValue().trim() : "";	
+					String ProgramName = row.getCell(1) != null ? row.getCell(1).getStringCellValue().trim() : "";
+					String BatchNo = row.getCell(2) != null ? getCellData(row.getCell(2)) : "";
+					String Description = row.getCell(3) != null ? row.getCell(3).getStringCellValue().trim() : "";
+					String Classcount = row.getCell(4) != null ? getCellData(row.getCell(4)) : "";
+					batchRecordlist.add(new batchRecords(TestCase,ProgramName, BatchNo, Description, Classcount));		
+					
 				}
 			}
 

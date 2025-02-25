@@ -30,9 +30,9 @@ public class BatchPageNavigation {
 	@Given ("Admin is on the home Page")
 	public void admin_is_on_the_home_Page() {
 		
-		lpage.getloginUrl();
-		lpage.getPageTitle();
-		
+//		lpage.getloginUrl();
+//		lpage.getPageTitle();
+//		
 	}
 	
 	@When("Admin clicks Batch tab on top right corner of the LMS page")

@@ -18,7 +18,8 @@ public class BatchPageValidation {
 
 	public BatchPageValidation() {
         page = new batchModule(DriverFactory.getDriver()); // Get the driver from driverManager
-		lpage = new LoginPage(DriverFactory.getDriver());
+        lpage = new LoginPage(DriverFactory.getDriver());
+		
 
     }
 	
@@ -27,6 +28,8 @@ public class BatchPageValidation {
 	public void admin_is_on_the_lms_page() {
 		lpage.getloginUrl();
 		lpage.getPageTitle();
+	
+		
 	}
 	
 	@When("Admin in batch page")

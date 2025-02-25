@@ -4,8 +4,10 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,6 +20,10 @@ public class CommonFunctions {
 		this.driver = driver;
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
 	}
+	
+	
+	
+	
 	//-------------------------Common Methods---------------------//
 
 	// Wait for element to be clickable
@@ -111,4 +117,25 @@ public class CommonFunctions {
          return alliconsValid;
     }
 
+    public void waitForPageToLoad(WebDriver driver) {
+      //  WebDriverWait wait = new WebDriverWait(driver, 20); // 20 seconds timeout
+
+        // Wait for JavaScript to finish loading
+        wait.until(webDriver -> ((JavascriptExecutor) webDriver)
+                .executeScript("return document.readyState").equals("complete"));
+
+        // Wait for jQuery AJAX calls to complete (if applicable)
+        wait.until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return (Boolean) ((JavascriptExecutor) driver)
+                        .executeScript("return (window.jQuery != null) && (jQuery.active === 0);");
+            }
+        });
+
+        System.out.println("Page loaded completely!");
+    }
+
+    
+    
+    
 }

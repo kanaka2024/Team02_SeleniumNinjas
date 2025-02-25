@@ -1,7 +1,7 @@
-#Author: 
+#Author: Anusuya S
 
 
-  
+  @Batch
 Feature: Delete Batch Validation
   Background:  Verify if user is logged in
  
@@ -38,6 +38,26 @@ Feature: Delete Batch Validation
 	When Admin clicks on the close icon in batch confirm popup
 	Then Admin should see the alert box closed
 	
+	 @DeleteBatchValidation
+	
+	Scenario: Validate single row delete with checkbox
+	
+	Given Admin in batch page
+	When Admin clicks on the delete icon under the Manage batch header
+	Then The respective row in the table should be deleted
+	 
+	 @DeleteBatchValidationn
+	
+	Scenario: Validate multiple row delete with checkbox
+	Given Admin in batch page
+	When Admin clicks on the multipledelete icon under the Manage batch header
+	Then The respective row in the table should be deleted
+	
+ 
+   
+   
+   
+
   
   
   
