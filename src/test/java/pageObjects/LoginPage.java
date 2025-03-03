@@ -1,3 +1,4 @@
+
 package pageObjects;
 
 import java.io.File;
@@ -309,4 +310,3 @@ public class LoginPage {
 	}
 	
 }
-

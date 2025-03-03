@@ -6,10 +6,12 @@ import io.cucumber.testng.CucumberOptions;
 
 
 @CucumberOptions(
-     features = "src/test/resources/features/01_Login.feature",
+     features = "src/test/resources/features",
      glue = {"stepDefinitions", "hooks"},
-     tags = "@login",
-     plugin = {"pretty", "html:target/cucumber-reports.html"}
+    // tags = "@class",
+     plugin = {"pretty", "html:target/cucumber-reports.html",
+    		 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
+    		 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
  )
 public class TestRunner extends AbstractTestNGCucumberTests{
 
